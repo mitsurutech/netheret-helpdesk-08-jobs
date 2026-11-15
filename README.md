@@ -43,4 +43,22 @@ time to see the clash message.
 - The week view uses CSS grid, so it is seven columns on a wide screen and
   one column on a phone, and each day is a section with a heading.
 
-<!-- links -->
+## Learn this step
+
+This is step 8 of 16 of **Task 2. Developing the solution**, a free series of T Level Digital Software Development
+lessons that builds the Netheret help desk in agile sprints with Python and Flask. Read the lesson for this step:
+[Scheduling on-site jobs](https://mitsurutech.co.uk/resources/t-level/dsd-t2-08-jobs).
+
+- Previous step: [step 07, assigning, escalating and the timeline](https://github.com/mitsurutech/netheret-helpdesk-07-timeline)
+- Next step: [step 09, an engineer's schedule and job briefs](https://github.com/mitsurutech/netheret-helpdesk-09-my-schedule)
+- [Every free T Level Digital lesson](https://mitsurutech.co.uk/resources/t-level)
+- [Teach these lessons to your class on MitsuruTech](https://mitsurutech.co.uk/learning), [see the pricing](https://mitsurutech.co.uk/pricing) or
+  [start a free year for your college](https://mitsurutech.co.uk/signup)
+
+## About
+
+Written by [Mitsuru Technologies](https://mitsurutech.co.uk) (MitsuruTech) as a teaching example for T Level Digital
+Software Development. The Netheret IT Support Solutions brief is from Pearson's sample assessment material; this code
+and its notes are our own, and are not published, endorsed or approved by Pearson or the Department for Education.
+'T Level' is a registered trade mark of the Department for Education.
+
