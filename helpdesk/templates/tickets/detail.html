@@ -95,6 +95,14 @@
       <p>This request is already at Tier 3, the highest tier.</p>
       {% endif %}
     </section>
+
+    {% if g.user.role == "manager" %}
+    <section class="card" aria-labelledby="job-heading">
+      <h3 id="job-heading">On-site visit</h3>
+      <p>Does an engineer need to go to {{ ticket.company.name }}?</p>
+      <p><a class="button" href="{{ url_for('jobs.new_job', ticket_id=ticket.id) }}">Schedule a job</a></p>
+    </section>
+    {% endif %}
   </div>
 
   <section aria-labelledby="update-heading">

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% from "_macros.html" import error_summary, field_error %}
+{% block title %}Schedule a job{% endblock %}
+{% block content %}
+  <h1>Schedule an on-site job</h1>
+  {{ error_summary(errors) }}
+
+  <form method="post" action="{{ url_for('jobs.new_job') }}" novalidate>
+    <div class="field">
+      <label for="company_id">Company</label>
+      {{ field_error(errors, "company_id") }}
+      <select id="company_id" name="company_id"{% if errors.company_id %} aria-describedby="company_id-error"{% endif %}>
+        <option value="">Choose a company</option>
+        {% for company in companies %}
+        <option value="{{ company.id }}"{% if form.company_id == company.id|string %} selected{% endif %}>{{ company.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="ticket_id">Support request (optional)</label>
+      <span class="hint" id="ticket_id-hint">Leave as "None" for planned work such as maintenance.</span>
+      {{ field_error(errors, "ticket_id") }}
+      <select id="ticket_id" name="ticket_id" aria-describedby="ticket_id-hint{% if errors.ticket_id %} ticket_id-error{% endif %}">
+        <option value="">None</option>
+        {% for ticket in tickets %}
+        <option value="{{ ticket.id }}"{% if form.ticket_id == ticket.id|string %} selected{% endif %}>{{ ticket.reference }}: {{ ticket.title }} ({{ ticket.company.name }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="engineer_id">Engineer</label>
+      {{ field_error(errors, "engineer_id") }}
+      <select id="engineer_id" name="engineer_id"{% if errors.engineer_id %} aria-describedby="engineer_id-error"{% endif %}>
+        <option value="">Choose an engineer</option>
+        {% for engineer in engineers %}
+        <option value="{{ engineer.id }}"{% if form.engineer_id == engineer.id|string %} selected{% endif %}>{{ engineer.name }} ({{ role_labels[engineer.role] }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="title">Title</label>
+      {{ field_error(errors, "title") }}
+      <input type="text" id="title" name="title" maxlength="150" value="{{ form.title }}"{% if errors.title %} aria-describedby="title-error"{% endif %}>
+    </div>
+
+    <div class="field">
+      <label for="kind">Kind of job</label>
+      {{ field_error(errors, "kind") }}
+      <select id="kind" name="kind"{% if errors.kind %} aria-describedby="kind-error"{% endif %}>
+        <option value="">Choose a kind</option>
+        {% for kind in kinds %}
+        <option value="{{ kind }}"{% if form.kind == kind %} selected{% endif %}>{{ kind|capitalize }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="scheduled_start">Starts</label>
+      {{ field_error(errors, "scheduled_start") }}
+      <input type="datetime-local" id="scheduled_start" name="scheduled_start" value="{{ form.scheduled_start }}"{% if errors.scheduled_start %} aria-describedby="scheduled_start-error"{% endif %}>
+    </div>
+
+    <div class="field">
+      <label for="duration_minutes">How long, in minutes</label>
+      {{ field_error(errors, "duration_minutes") }}
+      <input type="number" id="duration_minutes" name="duration_minutes" min="15" max="480" step="15" value="{{ form.duration_minutes or 60 }}"{% if errors.duration_minutes %} aria-describedby="duration_minutes-error"{% endif %}>
+    </div>
+
+    <div class="field">
+      <label for="brief">Job brief</label>
+      <span class="hint" id="brief-hint">What to do, what to take, and anything to know about the site.</span>
+      {{ field_error(errors, "brief") }}
+      <textarea id="brief" name="brief" aria-describedby="brief-hint{% if errors.brief %} brief-error{% endif %}">{{ form.brief }}</textarea>
+    </div>
+
+    <button type="submit">Schedule job</button>
+  </form>
+{% endblock %}

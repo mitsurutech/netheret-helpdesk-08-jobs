@@ -182,3 +182,22 @@ th { background: var(--panel); }
 
 .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
 h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+
+/* The week of jobs: seven columns on a wide screen, one on a phone. */
+.week-nav { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+.week { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.5rem; }
+.day { border: 1px solid var(--line); border-radius: 6px; padding: 0 0.5rem 0.5rem; min-height: 8rem; }
+.day.today { border: 3px solid var(--brand); }
+.day h2 { font-size: 1rem; margin: 0.5rem 0; }
+.job-list { list-style: none; margin: 0; padding: 0; }
+.job { background: var(--panel); border-left: 4px solid var(--brand); padding: 0.25rem 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; }
+.job p { margin: 0.2rem 0; }
+.job.cancelled { border-left-color: var(--muted); }
+.job.cancelled .job-title { text-decoration: line-through; }
+.job-time { font-weight: bold; }
+.job-title { font-weight: bold; color: var(--brand-dark); }
+.muted { color: var(--muted); }
+.job-scheduled { color: var(--link); }
+.job-in_progress { color: var(--warn); }
+.job-done { color: var(--good); }
+.job-cancelled { color: var(--muted); }

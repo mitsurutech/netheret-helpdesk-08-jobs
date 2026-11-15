@@ -3,7 +3,7 @@
 Each class attribute is a column. Mapped[...] says what type of Python value
 the column holds; "| None" means the column may be empty (NULL).
 """
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -138,6 +138,10 @@ class Job(db.Model):
     ticket: Mapped["Ticket"] = relationship()
     company: Mapped["Company"] = relationship()
     engineer: Mapped["User"] = relationship()
+
+    @property
+    def scheduled_end(self):
+        return self.scheduled_start + timedelta(minutes=self.duration_minutes)
 
 
 class Article(db.Model):

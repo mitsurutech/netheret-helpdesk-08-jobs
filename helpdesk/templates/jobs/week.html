@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Jobs for the week of {{ monday|date }}{% endblock %}
+{% block content %}
+  <h1>Jobs for the week of {{ monday|date }}</h1>
+
+  <nav class="week-nav" aria-label="Weeks">
+    <a href="{{ url_for('jobs.week', week=previous_week.isoformat()) }}">Previous week</a>
+    <a href="{{ url_for('jobs.week') }}">This week</a>
+    <a href="{{ url_for('jobs.week', week=next_week.isoformat()) }}">Next week</a>
+    {% if g.user.role == "manager" %}
+    <a class="button" href="{{ url_for('jobs.new_job') }}">Schedule a job</a>
+    {% endif %}
+  </nav>
+
+  <div class="week">
+    {% for day in days %}
+    <section class="day{{ ' today' if day.date == today }}" aria-labelledby="day-{{ loop.index }}">
+      <h2 id="day-{{ loop.index }}">{{ day.date|date }}{% if day.date == today %} (today){% endif %}</h2>
+      {% if day.jobs %}
+      <ul class="job-list">
+        {% for job in day.jobs %}
+        <li class="job{{ ' cancelled' if job.status == 'cancelled' }}">
+          <p class="job-time">{{ job.scheduled_start.strftime("%H:%M") }} to {{ job.scheduled_end.strftime("%H:%M") }}</p>
+          <p class="job-title">{{ job.title }}</p>
+          <p>{{ job.company.name }}<br>{{ job.engineer.name }}, {{ job.kind }}</p>
+          <p><span class="badge job-{{ job.status }}">{{ job.status|replace("_", " ")|capitalize }}</span></p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="muted">No jobs.</p>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </div>
+{% endblock %}

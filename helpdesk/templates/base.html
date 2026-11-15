@@ -24,6 +24,7 @@
           {{ nav_link('main.dashboard', 'Dashboard') }}
           {% if g.user.is_staff %}
           {{ nav_link('tickets.queue', 'Queue') }}
+          {{ nav_link('jobs.week', 'Jobs') }}
           {% endif %}
           {% if g.user.role in ["customer", "tier1", "manager"] %}
           {{ nav_link('tickets.new_request', 'Raise a request') }}

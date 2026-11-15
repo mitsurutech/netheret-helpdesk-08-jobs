@@ -1,26 +1,22 @@
-# Netheret help desk, step 07: timeline
+# Netheret help desk, step 08: jobs
 
 A teaching example. Over sixteen steps we build a help desk web app for
 Netheret, a made-up company that supports the IT of small businesses. This
-step lets staff work on a request: assign it, escalate it to a higher tier,
-change its status and add updates, all recorded on a timeline.
+step lets a manager schedule on-site jobs for engineers and see a week of
+jobs laid out like a calendar.
 
 ## What this step adds
 
-In `helpdesk/tickets.py` and `templates/tickets/detail.html`:
-
-- **Timeline**: every `TicketUpdate` for the request, oldest first. Each one
-  is marked "Internal note" or "Customer can see this".
-- **Assign** (`/requests/<id>/assign`): Tier 1 agents and managers can give
-  a request to anybody on the staff. Engineers get a "Take this request"
-  button instead. A new request becomes open once somebody has it.
-- **Escalate** (`/requests/<id>/escalate`): move a request up to Tier 2 or
-  Tier 3, with a reason. It is unassigned so the next tier can pick it up.
-- **Add an update** (`/requests/<id>/updates`): a note, an optional new
-  status, and a tick box for whether the customer can see it.
-- `add_update()` and `change_status()`: every action writes to the timeline,
-  and `resolved_at` is set when a request is resolved and cleared if it is
-  reopened.
+- `helpdesk/jobs.py`, a new blueprint with:
+  - `/jobs`: the week view, Monday to Sunday, with previous and next week
+    links (`/jobs?week=2026-11-16` shows the week with that date in it);
+  - `/jobs/new`: the form to schedule a job (managers only).
+- `find_clash()`: an engineer cannot be booked for two jobs at once.
+- `Job.scheduled_end` in `models.py`: the end time worked out from the start
+  and the length, rather than stored twice.
+- A "Schedule a job" button on a request's detail page, which fills in the
+  company and request. The customer sees "An engineer will visit on..." on
+  the request's timeline.
 
 ## Run it
 
@@ -32,17 +28,19 @@ python seed.py
 flask --app helpdesk run --debug
 ```
 
-Sign in as `tier1@netheret.example` (demo password `password123`), open a
-new request from the queue, assign it, escalate it and resolve it. Then sign
-in as `tier2@netheret.example` and take a request.
+Sign in as `manager@netheret.example` (demo password `password123`), open
+Jobs, and schedule a job. Try booking the same engineer twice at the same
+time to see the clash message.
 
 ## What to look at
 
-- Each action is its own small form that POSTs to its own route, then
-  redirects back to the detail page (so refreshing does not send it twice).
-- The server checks the role again: an engineer who sends somebody else's id
-  to `/assign` gets 403, even though the page never offers that.
-- A tick box is only sent when it is ticked, so "not sent" means "no".
-- Text in updates is escaped by Jinja, so `<b>` shows as text, not bold.
+- Two time ranges overlap when each one starts before the other one ends:
+  `job.scheduled_start < end and start < job.scheduled_end`.
+- `datetime.strptime` turns the text from a `datetime-local` box into a
+  `datetime`, and a `ValueError` means it was not a real date and time.
+- The chosen request must belong to the chosen company: the server checks
+  that the pieces of the form agree with each other, not just each one alone.
+- The week view uses CSS grid, so it is seven columns on a wide screen and
+  one column on a phone, and each day is a section with a heading.
 
 <!-- links -->
